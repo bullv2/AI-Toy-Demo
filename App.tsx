@@ -6,11 +6,13 @@ import { Ionicons } from '@expo/vector-icons';
 import MainPage from './src/screens/MainPage';
 import MissionPage from './src/screens/MissionPage';
 import TipsPage from './src/screens/TipsPage';
+import RewardPage from './src/screens/RewardPage';
 
 type RootTabParamList = {
   主页: undefined;
   任务: undefined;
   提醒: undefined;
+  奖励: undefined;
 };
 
 const Tab = createBottomTabNavigator<RootTabParamList>();
@@ -30,6 +32,8 @@ export default function App() {
               iconName = focused ? 'list' : 'list-outline';
             } else if (route.name === '提醒') {
               iconName = focused ? 'notifications' : 'notifications-outline';
+            } else if (route.name === '奖励') {
+              iconName = focused ? 'gift' : 'gift-outline';
             } else {
               iconName = 'help';
             }
@@ -43,6 +47,7 @@ export default function App() {
         <Tab.Screen name="主页" component={MainPage} options={{ headerShown: false }} />
         <Tab.Screen name="任务" component={MissionPage} options={{ headerShown: false }} />
         <Tab.Screen name="提醒" component={TipsPage} options={{ headerShown: false }} />
+        <Tab.Screen name="奖励" component={RewardPage} options={{ headerShown: false }} />
       </Tab.Navigator>
     </NavigationContainer>
   );

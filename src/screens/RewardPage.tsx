@@ -8,79 +8,69 @@ import {
   ScrollView,
 } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
+import { useNavigation } from '@react-navigation/native';
+import { StackNavigationProp } from '@react-navigation/stack';
+import { RootStackParamList } from '../types/navigation';
+
+type RewardPageNavigationProp = StackNavigationProp<RootStackParamList, 'MainTabs'>;
 
 const RewardPage = () => {
-  const currentPoints = 1500; // This would come from your state management
+  const navigation = useNavigation<RewardPageNavigationProp>();
 
   return (
     <View style={styles.container}>
       <View style={styles.pointsContainer}>
-        <Text style={styles.pointsLabel}>当前积分</Text>
-        <Text style={styles.pointsValue}>🎉 {currentPoints}</Text>
+        <Text style={styles.pointsTitle}>当前积分</Text>
+        <View style={styles.pointsDisplay}>
+          <Text style={styles.pointsValue}>1500</Text>
+          <Text style={styles.pointsEmoji}>🎉</Text>
+        </View>
         <Text style={styles.pointsSubtitle}>继续完成任务获取更多积分！</Text>
       </View>
 
       <View style={styles.storesContainer}>
         <TouchableOpacity 
-          style={[styles.storeButton, styles.virtualStore]}
-          onPress={() => {/* Navigate to virtual store */}}
+          style={[styles.storeButton, styles.virtualStore]} 
+          onPress={() => navigation.navigate('VirtualAssetStore')}
         >
           <View style={styles.storeIconContainer}>
-            <Ionicons name="shirt-outline" size={32} color="#FF6B6B" />
+            <Ionicons name="shirt" size={32} color="#fff" />
+            <Text style={styles.storeIconEmoji}>🎮</Text>
           </View>
           <View style={styles.storeInfo}>
-            <Text style={styles.storeTitle}>🎮 虚拟装扮商店</Text>
-            <Text style={styles.storeDescription}>
-              兑换虚拟服装、装饰和徽章
-            </Text>
+            <Text style={styles.storeTitle}>虚拟资产商店</Text>
+            <Text style={styles.storeDescription}>兑换虚拟服装、装饰和徽章</Text>
           </View>
-          <Ionicons name="chevron-forward" size={24} color="#666" />
+          <Ionicons name="chevron-forward" size={24} color="#fff" />
         </TouchableOpacity>
 
         <TouchableOpacity 
-          style={[styles.storeButton, styles.gachaStore]}
-          onPress={() => {/* Navigate to gacha store */}}
+          style={[styles.storeButton, styles.gachaStore]} 
+          onPress={() => navigation.navigate('GachaStore')}
         >
           <View style={styles.storeIconContainer}>
-            <Ionicons name="gift-outline" size={32} color="#4ECDC4" />
+            <Ionicons name="gift" size={32} color="#fff" />
+            <Text style={styles.storeIconEmoji}>🎁</Text>
           </View>
           <View style={styles.storeInfo}>
-            <Text style={styles.storeTitle}>🎁 扭蛋兑换商店</Text>
-            <Text style={styles.storeDescription}>
-              兑换迪士尼、万代等品牌扭蛋
-            </Text>
+            <Text style={styles.storeTitle}>扭蛋商店</Text>
+            <Text style={styles.storeDescription}>兑换迪士尼、万代等品牌扭蛋</Text>
           </View>
-          <Ionicons name="chevron-forward" size={24} color="#666" />
+          <Ionicons name="chevron-forward" size={24} color="#fff" />
         </TouchableOpacity>
       </View>
 
-      <ScrollView style={styles.termsContainer}>
-        <Text style={styles.termsTitle}>积分使用说明</Text>
-        <View style={styles.termItem}>
-          <Text style={styles.termBullet}>•</Text>
-          <Text style={styles.termText}>
-            积分可通过完成任务、每日签到等方式获取
+      <View style={styles.termsContainer}>
+        <Text style={styles.termsTitle}>使用条款</Text>
+        <ScrollView style={styles.termsContent}>
+          <Text style={styles.termsText}>
+            • 积分可以通过完成任务获得{'\n'}
+            • 虚拟物品一经兑换，概不退换{'\n'}
+            • 积分有效期为1年{'\n'}
+            • 如有问题请联系客服
           </Text>
-        </View>
-        <View style={styles.termItem}>
-          <Text style={styles.termBullet}>•</Text>
-          <Text style={styles.termText}>
-            虚拟装扮和扭蛋兑换后不可退款
-          </Text>
-        </View>
-        <View style={styles.termItem}>
-          <Text style={styles.termBullet}>•</Text>
-          <Text style={styles.termText}>
-            积分有效期至2024年12月31日
-          </Text>
-        </View>
-        <View style={styles.termItem}>
-          <Text style={styles.termBullet}>•</Text>
-          <Text style={styles.termText}>
-            如有疑问，请联系客服
-          </Text>
-        </View>
-      </ScrollView>
+        </ScrollView>
+      </View>
     </View>
   );
 };
@@ -107,16 +97,26 @@ const styles = StyleSheet.create({
     shadowRadius: 4,
     elevation: 3,
   },
-  pointsLabel: {
+  pointsTitle: {
     fontSize: 16,
-    color: '#666',
+    fontWeight: '600',
+    color: '#333',
+    marginBottom: 8,
+  },
+  pointsDisplay: {
+    flexDirection: 'row',
+    alignItems: 'center',
     marginBottom: 8,
   },
   pointsValue: {
     fontSize: 48,
     fontWeight: 'bold',
     color: '#FF6B6B',
-    marginBottom: 8,
+    marginRight: 8,
+  },
+  pointsEmoji: {
+    fontSize: 24,
+    color: '#FF6B6B',
   },
   pointsSubtitle: {
     fontSize: 14,
@@ -172,6 +172,10 @@ const styles = StyleSheet.create({
     fontSize: 14,
     color: '#666',
   },
+  storeIconEmoji: {
+    fontSize: 24,
+    color: '#FF6B6B',
+  },
   termsContainer: {
     flex: 1,
     padding: 20,
@@ -194,16 +198,10 @@ const styles = StyleSheet.create({
     color: '#333',
     marginBottom: 16,
   },
-  termItem: {
-    flexDirection: 'row',
-    marginBottom: 12,
+  termsContent: {
+    flex: 1,
   },
-  termBullet: {
-    color: '#FF6B6B',
-    marginRight: 8,
-    fontSize: 16,
-  },
-  termText: {
+  termsText: {
     flex: 1,
     fontSize: 14,
     color: '#666',
